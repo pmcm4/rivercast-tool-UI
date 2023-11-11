@@ -1,0 +1,33 @@
+.root {
+  height: 100vh;
+  width: 1920px;
+}
+.top-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+.bottom-body {
+}
+.graph-results {
+  width: 1162px;
+  height: 776px;
+}
+.table-results {
+  width: 660px;
+  height: 776px;
+}
+.graph-process {
+}
+.selected-graph {
+}
+.selection-graph {
+}
+.select-station {
+}
+.tabular-results {
+}
