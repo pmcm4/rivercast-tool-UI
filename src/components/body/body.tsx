@@ -138,8 +138,8 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['process-1-title']}>Clean Dataset</span>
                         </div>
                         <div className={styles['center-bar-process']} />
-                        <div className={styles['bottom-bar-process']}> 
-                                                    <div className={styles['left-process-legends']}>
+                        <div className={styles['bottom-bar-process']}>
+                            <div className={styles['left-process-legends']}>
                                 <span className={styles['legends-process']}>
                                     <div className={styles['legend-1']} />
                                     Lorem Ipsum
@@ -175,7 +175,7 @@ export const Body = ({ className }: BodyProps) => {
                                     Lorem Ipsum
                                 </span>
                             </div>
-                            </div>
+                        </div>
                     </div>
                     <div className={styles.heat_map_process}>
                         <div className={styles['topbar-process']}>
@@ -188,6 +188,7 @@ export const Body = ({ className }: BodyProps) => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

@@ -1,0 +1,38 @@
+.root {
+  width: 1920px;
+  height: 50px;
+  margin-top: 99px;
+}
+@font-face {
+  font-family: 'PublicSansSemibold';
+  src: local('PublicSansSemibold'),
+    url(/src/assets/fonts/PublicSans-SemiBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'PublicSansMedium';
+  src: local('PublicSansMedium'), url(/src/assets/fonts/PublicSans-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: local('Inter'), url(/src/assets/fonts/Inter-Bold.ttf) format('truetype');
+}
+
+.footer {
+  height: 50px;
+  background-color: #0e1318;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
+  bottom: 0px;
+  width: 100%;
+}
+.h3-arr {
+  color: white;
+  font-family: 'PublicSansMedium';
+  font-size: 16px;
+}

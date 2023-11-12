@@ -34,7 +34,7 @@ export const Header = ({ className }: HeaderProps) => {
                 />
                 <div className={styles.text_mae}>
                     <span className={styles.mae_title}>Mean Absolute Error</span>
-                    <span className={styles.mae_result}>0.6166775160967135</span>
+                    <span className={styles.mae_result}>0.000000000000000</span>
                 </div>
             </div>
         </div>

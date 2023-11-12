@@ -47,8 +47,9 @@
   flex-direction: row;
   align-items: center;
   justify-items: center;
-  justify-content: space-around;
   margin-right: 30px;
+  align-content: center;
+  justify-content: space-between;
 }
 .logo {
   width: 56px;
@@ -84,6 +85,7 @@
   align-content: start;
   justify-content: start;
   font-family: 'MyFont';
+  width: 292px;
 }
 .mae_title {
   line-height: normal;

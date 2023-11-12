@@ -1,12 +1,12 @@
 import { createBoard } from '@wixc3/react-board';
-import { Body } from '../../../components/body/body';
+import { Footer } from '../../../components/footer/footer';
 
 export default createBoard({
-    name: 'Body',
-    Board: () => <Body />,
+    name: 'Footer',
+    Board: () => <Footer />,
     isSnippet: true,
     environmentProps: {
         windowWidth: 1920,
-        windowHeight: 1620,
+        windowHeight: 1080,
     },
 });
