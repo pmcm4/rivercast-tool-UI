@@ -28,43 +28,43 @@ export interface BodyProps {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: 'rgba(0, 0, 0, 0)',
-      color: 'rgba(51, 204, 204, 1)',
-      fontFamily: 'PublicSansSemiBold'
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        color: 'rgba(51, 204, 204, 1)',
+        fontFamily: 'PublicSansSemiBold'
     },
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-      fontWeight: 'bold',
-      color: 'white',
-      fontFamily: 'PublicSansMedium'
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'white',
+        fontFamily: 'PublicSansMedium'
     },
-  }));
-  
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: 'rgba(255, 255, 255, 0.45)',
+        backgroundColor: 'rgba(255, 255, 255, 0.45)',
     },
     // hide last border
     '&:last-child td, &:last-child th': {
-      border: 0,
+        border: 0,
     },
-  }));
+}));
 
 function createData(
     time: string,
     m1: number,
     m2: number,
-  ) {
-    return { time, m1, m2};
-  }
-  const rows = [
+) {
+    return { time, m1, m2 };
+}
+const rows = [
     createData('6 AM', 0.3565, 6.0),
     createData('6 AM', 159, 6.0),
     createData('6 AM', 159, 6.0),
     createData('6 AM', 159, 6.0),
     createData('6 AM', 159, 6.0),
     createData('6 AM', 159, 6.0),
-  ];
+];
 
 
 ChartJS.register(
@@ -86,10 +86,10 @@ const SN_options = {
     responsive: true,
     plugins: {
         title: {
-          display: true,
-          text: 'Sto. Nino',
+            display: true,
+            text: 'Sto. Nino',
         },
-      },
+    },
     scales: {
         y: {
             border: {
@@ -133,10 +133,10 @@ const SM_options = {
     responsive: true,
     plugins: {
         title: {
-          display: true,
-          text: 'San Mateo',
+            display: true,
+            text: 'San Mateo',
         },
-      },
+    },
     scales: {
         y: {
             border: {
@@ -180,10 +180,10 @@ const TM_options = {
     responsive: true,
     plugins: {
         title: {
-          display: true,
-          text: 'Tumana',
+            display: true,
+            text: 'Tumana',
         },
-      },
+    },
     scales: {
         y: {
             border: {
@@ -259,19 +259,19 @@ export const Body = ({ className }: BodyProps) => {
                     </div>
                     <div className={styles['selection-graph']}>
                         <div className={styles['mini-results']} >
-                        <div className={styles['graph-mini-class']}>
-                            <Line options={SN_options} data={data} className={styles['graph-class']} /> 
-                        </div>
-                        </div>
-                        <div className={styles['mini-results']} >
-                        <div className={styles['graph-mini-class']}>
-                            <Line options={SM_options} data={data} className={styles['graph-class']} /> 
-                        </div>
+                            <div className={styles['graph-mini-class']}>
+                                <Line options={SN_options} data={data} className={styles['graph-class']} />
+                            </div>
                         </div>
                         <div className={styles['mini-results']} >
-                        <div className={styles['graph-mini-class']}>
-                            <Line options={TM_options} data={data} className={styles['graph--class']} /> 
+                            <div className={styles['graph-mini-class']}>
+                                <Line options={SM_options} data={data} className={styles['graph-class']} />
+                            </div>
                         </div>
+                        <div className={styles['mini-results']} >
+                            <div className={styles['graph-mini-class']}>
+                                <Line options={TM_options} data={data} className={styles['graph--class']} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -334,29 +334,29 @@ export const Body = ({ className }: BodyProps) => {
                             />
                             <span className={styles['title-vf']}>Experimental Results</span>
                         </div>
-                        <div className={styles.table}> 
-                        <TableContainer component={Paper} sx={{backgroundColor: "transparent"}} >
-                            <Table sx={{ width: 658, height: 443}} aria-label="customized table" >
-                                <TableHead >
-                                <TableRow >
-                                    <StyledTableCell sx={{ width: 80, height: 84, border: 'none'}}>TIME</StyledTableCell>
-                                    <StyledTableCell align="center" sx={{ width: 223, height: 84, border: 'none'}}>Vanilla Transformer by Jiaxing Xu, Hongxiang Fan, Minghan Luo et al. (2013)</StyledTableCell>
-                                    <StyledTableCell align="center" sx={{ width: 223,  height: 84, border: 'none'}}>Transformer with Principal Component Analysis</StyledTableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody sx={{ border: 'none'}}>
-                                {rows.map((row) => (
-                                    <StyledTableRow key={row.time} sx={{ border: 'none'}}>
-                                    <StyledTableCell component="th" scope="row" sx={{ height: 10, border: 'none'}}>
-                                        {row.time}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center" sx={{ height: 10, border: 'none'}}>{row.m1}</StyledTableCell>
-                                    <StyledTableCell align="center" sx={{ height: 10, border: 'none'}}>{row.m2}</StyledTableCell>
-                                    </StyledTableRow >
-                                ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <div className={styles.table}>
+                            <TableContainer component={Paper} sx={{ backgroundColor: "transparent" }} >
+                                <Table sx={{ width: 658, height: 443 }} aria-label="customized table" >
+                                    <TableHead >
+                                        <TableRow >
+                                            <StyledTableCell sx={{ width: 80, height: 84, border: 'none' }}>TIME</StyledTableCell>
+                                            <StyledTableCell align="center" sx={{ width: 223, height: 84, border: 'none' }}>Vanilla Transformer by Jiaxing Xu, Hongxiang Fan, Minghan Luo et al. (2013)</StyledTableCell>
+                                            <StyledTableCell align="center" sx={{ width: 223, height: 84, border: 'none' }}>Transformer with Principal Component Analysis</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody sx={{ border: 'none' }}>
+                                        {rows.map((row) => (
+                                            <StyledTableRow key={row.time} sx={{ border: 'none' }}>
+                                                <StyledTableCell component="th" scope="row" sx={{ height: 10, border: 'none' }}>
+                                                    {row.time}
+                                                </StyledTableCell>
+                                                <StyledTableCell align="center" sx={{ height: 10, border: 'none' }}>{row.m1}</StyledTableCell>
+                                                <StyledTableCell align="center" sx={{ height: 10, border: 'none' }}>{row.m2}</StyledTableCell>
+                                            </StyledTableRow >
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </div>
                     </div>
                 </div>
@@ -461,7 +461,11 @@ export const Body = ({ className }: BodyProps) => {
                                 Visualize Attention Scores
                             </span>
                         </div>
-                        <div className={styles['attention-scores']} />
+                        <div className={styles['attention-scores']} >
+                            <img src='https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699853748/Stroke_1_lme7yf.png' className={styles.left_arrow} ></img>
+                            <div className={styles.attention_scores_container}></div>
+                            <img src='https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699853748/aa_a8fgph.png' className={styles.right_arrow}></img>
+                        </div>
                     </div>
                 </div>
             </div>

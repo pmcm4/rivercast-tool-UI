@@ -398,6 +398,13 @@
     width: 100%;
     background-color: #0e1318;
     height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+    column-gap: 40px;
 }
 
 .left-process-legends {
@@ -506,3 +513,13 @@
 .graph-mini-class {
     width: 250px;
 }
+
+.attention_scores_container {
+    width: 561px;
+    height: 238px;
+    background-color: w;
+}
+
+.left_arrow {}
+
+.right_arrow {}
