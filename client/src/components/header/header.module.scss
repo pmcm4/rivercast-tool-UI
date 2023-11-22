@@ -38,16 +38,16 @@
   justify-content: space-around;
   gap: 0px 20px;
   height: 100px;
-  margin-left: 30px;
+  margin-left: 60px;
 }
 .right {
-  width: 362px;
+  width: auto;
   height: 100px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-items: center;
-  margin-right: 30px;
+  margin-right: 60px;
   align-content: center;
   justify-content: space-between;
 }
@@ -99,7 +99,32 @@
   color: #7299bf;
   font-family: 'PublicSansSemibold';
 }
+
+.header_models {
+  cursor: pointer;
+}
+.selected {
+  color: #7299BF;
+}
 .mae_logo {
   width: 54px;
   height: 54px;
+  cursor: pointer;
+  margin-right: 30px;
+}
+.mae_logo:hover{
+  transition: filter 0.2s ease;
+  filter: drop-shadow(0 0 0.75rem #00CEFF);
+}
+
+.mae_logo1 {
+  width: 54px;
+  height: 54px;
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+.mae_logo1:hover{
+  transition: filter 0.2s ease;
+  filter: drop-shadow(0 0 0.75rem #DBB36E);
 }

@@ -66,6 +66,34 @@ app.get('/api/bimae/:table', (req, res) => {
   });
 });
 
+app.get('/api/totrcmae/:table', (req, res) => {
+  const { table } = req.params;
+  const query = `SELECT cnt, aMAE, tMAE FROM ${table} order by cnt DESC limit 1`;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get('/api/totbimae/:table', (req, res) => {
+  const { table } = req.params;
+  const query = `SELECT cnt, aMAE, tMAE FROM ${table} order by cnt DESC limit 1`;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 app.listen(port, () => {
   console.log(`API server listening at http://localhost:${port}`);
 });
