@@ -1,22 +1,31 @@
-import { useState } from 'react';
+// App.tsx
+
+import React, { useState } from 'react';
 import styles from './App.module.scss';
 import { Header } from './components/header/header';
 import { Body } from './components/body/body';
 import { Footer } from './components/footer/footer';
 import { ModelProvider } from './ModelContext';
+import LoadingModal from './LoadingModal'; // Adjust the import path accordingly
 
 function App() {
-    const [count, setCount] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    const handleDataFetchComplete = () => {
+      setLoading(false);
+    };
+  
 
     return (
         <div className={styles.App}>
-            <ModelProvider>
-            <Header />
-            <Body />
-            <Footer />
-            </ModelProvider>
+          <ModelProvider>
+
+                <Body />
+                <Footer />
+          </ModelProvider>
         </div>
-    );
-}
+      );
+    }
+    
 
 export default App;

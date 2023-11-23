@@ -2,9 +2,11 @@ import classNames from 'classnames';
 import styles from './header.module.scss';
 import { useEffect, useState } from 'react';
 import { useModelContext } from '../../ModelContext';
+import LoadingModal from '../../LoadingModal';
 
 export interface HeaderProps {
     className?: string;
+    onDataFetchComplete: () => void; // Add this line
 }
 
 /**
@@ -24,42 +26,40 @@ interface bidirectionalTotMAE{
     'tMAE': number;
 }
 
-export const Header = ({ className }: HeaderProps) => {
+export const Header: React.FC<HeaderProps> = ({ className, onDataFetchComplete }) => {
 
     const { selectedModel, setSelectedModel } = useModelContext();
     const [rcTotMAE, setrcTotMAE] = useState<rivercastTotMAE[]>([]);
     const [biTotMAE, setbiTotMAE] = useState<bidirectionalTotMAE[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const checkForNewData = () => {
+    useEffect(() => {
         // Fetch data for Rivercast Model
         const fetchLatestData = async () => {
-            try {
-                const updateModelData = await fetch('http://127.0.0.1:5000/updateModelData');
-                const updateModelDataRes = await updateModelData.json()
-                console.log(updateModelDataRes)
-
-                const updateTrueValuesRC = await fetch('http://127.0.0.1:5000/addRCTrueValuesToDB');
-                const updateTrueValuesRCRes = await updateTrueValuesRC.json()
-                console.log(updateTrueValuesRCRes)
-
-                const updateTrueValuesBi = await fetch('http://127.0.0.1:5000/addBiTrueValuesToDB');
-                const updateTrueValuesBiRes = await updateTrueValuesBi.json()
-                console.log(updateTrueValuesBiRes)
-
-                const updateMAErivercast = await fetch('http://127.0.0.1:5000/getrivercastMAE');
-                const updateMAErivercastRes = await updateMAErivercast.json()
-                console.log(updateMAErivercastRes)
-
-                const updateMAEbidirectional = await fetch('http://127.0.0.1:5000/getBidirectionalMAE');
-                const updateMAEbidirectionalRes = await updateMAEbidirectional.json()
-                console.log(updateMAEbidirectionalRes)
-
-            } catch (error) {
-                console.error('Error fetching Rivercast Model data:', error);
+          try {
+            setLoading(true);
+      
+            const response = await fetch('http://127.0.0.1:5000/updateModelData');
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
             }
+      
+            const updateModelData = await response.json();
+      
+            // Process updateModelData as needed
+            // ...
+      
+          } catch (error) {
+            console.error('Error fetching or parsing Rivercast Model data:', error);
+          } finally {
+            setLoading(false);
+            onDataFetchComplete(); // Notify the parent that data fetching is complete
+          }
         };
+      
         fetchLatestData();
-    }
+      }, [onDataFetchComplete]);
 
     const checkForNewPrediction = () => {
         // Fetch data for Rivercast Model
@@ -170,7 +170,6 @@ export const Header = ({ className }: HeaderProps) => {
                     src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699599675/fi-bs-target_yyiify.png"
                     alt=""
                     className={styles.mae_logo}
-                    onClick={checkForNewData}
                 />
                 <img
                     src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1700649214/fi-bs-target_yyiify_1_copy_a9e2qy.png"
@@ -178,14 +177,22 @@ export const Header = ({ className }: HeaderProps) => {
                     className={styles.mae_logo1}
                     onClick={checkForNewPrediction}
                 />
+                 <LoadingModal loading={loading} />
+                        {!loading && (
                 <div className={styles.text_mae}>
+               
                     <span className={styles.mae_title}>Mean Absolute Error</span>
                     {totMAEsRow.map((row, index) => (
                         <span key={index} className={styles.mae_result}>
+                            
                             {selectedModel === 'rivercast' ? row.m3 : row.m4}
+                        
                         </span>
+                        
                     ))}
+                    
                 </div>
+                )}           
             </div>
         </div>
     );

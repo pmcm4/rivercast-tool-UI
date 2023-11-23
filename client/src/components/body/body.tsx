@@ -26,6 +26,8 @@ import { CCarousel, CCarouselItem, CImage, CCarouselCaption } from '@coreui/reac
 import '@coreui/coreui/dist/css/coreui.min.css'
 import DropDownCall from './Dropdown_call';
 import { useModelContext } from '../../ModelContext';
+import { Header } from '../header/header';
+import LoadingModal from '../../LoadingModal';
 
 export interface BodyProps {
     className?: string;
@@ -465,7 +467,43 @@ export const Body = ({ className }: BodyProps) => {
     const [rcTotMAE, setrcTotMAE] = useState<rivercastTotMAE[]>([]);
     const [biTotMAE, setbiTotMAE] = useState<bidirectionalTotMAE[]>([]);
 
-    const { selectedModel} = useModelContext();
+    const { selectedModel, setSelectedModel} = useModelContext();
+
+
+    const [loading, setLoading] = useState(true);
+
+    const handleDataFetchComplete = () => {
+      setLoading(false);
+    };
+
+    useEffect(() => {
+        // Fetch data for Rivercast Model
+        const fetchLatestData = async () => {
+          try {
+            setLoading(true);
+      
+            const response = await fetch('http://127.0.0.1:5000/updateModelData');
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+      
+            const updateModelData = await response.json();
+      
+            // Process updateModelData as needed
+            // ...
+      
+          } catch (error) {
+            console.error('Error fetching or parsing Rivercast Model data:', error);
+          } finally {
+            setLoading(false);
+            handleDataFetchComplete
+          }
+        };
+      
+        fetchLatestData();
+      }, []);
+  
 
     
     useEffect(() => {
@@ -718,15 +756,99 @@ export const Body = ({ className }: BodyProps) => {
     )
     );
 
-  console.log(totMAEsRow)
+    const checkForNewData = () => {
+        // Fetch data for Rivercast Model
+        const fetchPredictionDataRc = async () => {
+            try {
+                const updatePredictionRC = await fetch('http://127.0.0.1:5000/addRCTrueValuesToDB');
+                const updatePredictionRCRes = await updatePredictionRC.json()
+                console.log(updatePredictionRCRes)
+            } catch (error) {
+                console.error('Error fetching Forecast Rivercast Model data:', error);
+            }
+        };
+        const fetchPredictionDataBi = async () => {
+            try {
+                const updatePredictionBi = await fetch('http://127.0.0.1:5000/addBiTrueValuesToDB');
+                const updateTrueValuesBiRes = await updatePredictionBi.json()
+                console.log(updateTrueValuesBiRes)
+            } catch (error) {
+                console.error('Error fetching Forecast Bidirectional Model data:', error);
+            }
+        };
+        {selectedModel === 'rivercast' ? fetchPredictionDataRc() : fetchPredictionDataBi()}
+        
+    }
+
 
   const sortedRows = [...rows].sort((a, b) => b.time - a.time);
 
     return (
         <div className={classNames(styles.root, className)}>
+            <div className={styles.headersss}>
+            <div className={styles.left}>
+                <img
+                    className={styles.logo}
+                    src={
+                        'https://res.cloudinary.com/dgb2lnz2i/image/upload/v1695638696/logo-rivercast_tjxykb.png'
+                    }
+                />
+                <span className={styles.navbar_title}>RIVERCAST</span>
+            </div>
+            <div className={styles.center}>
+            <h4
+                className={classNames(styles.header_models, {
+                    [styles.selected]: selectedModel === 'rivercast',
+                })}
+                onClick={() => setSelectedModel('rivercast')}
+                >
+                RiverCast
+                </h4>
+                <h4
+                className={classNames(styles.header_models, {
+                    [styles.selected]: selectedModel === 'bidirectional',
+                })}
+                onClick={() => setSelectedModel('bidirectional')}
+                >
+                Bidirectional
+            </h4>
+            </div>
+            <div className={styles.right}>
+                <img
+                    src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699599675/fi-bs-target_yyiify.png"
+                    alt=""
+                    className={styles.mae_logo}
+                    onClick={checkForNewData}
+                />
+                <img
+                    src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1700649214/fi-bs-target_yyiify_1_copy_a9e2qy.png"
+                    alt=""
+                    className={styles.mae_logo1}
+                    
+                />
+                 <LoadingModal loading={loading} />
+                        {!loading && (
+                <div className={styles.text_mae}>
+               
+                    <span className={styles.mae_title}>Mean Absolute Error</span>
+                    {totMAEsRow.map((row, index) => (
+                        <span key={index} className={styles.mae_result}>
+                            
+                            {selectedModel === 'rivercast' ? row.m3 : row.m4}
+                        
+                        </span>
+                        
+                    ))}
+                    
+                </div>
+                )}           
+            </div>
+            </div>
             <div className={styles['top-body']}>
                 <div className={styles['graph-results']}>
             <div className={styles['selected-graph']}>
+            <LoadingModal loading={loading} />
+                {!loading && (
                 <div className={styles['inside-chart']}>
                 {selectedChart === 'nangka' ? (
                     <Line options={NangkaOptions} data={selectedModel === 'rivercast' ? rivercast_nangkaChart : bidirectional_nangkaChart} className={styles['graph-class']} />
@@ -737,41 +859,54 @@ export const Body = ({ className }: BodyProps) => {
                 {selectedChart === 'montalban' ? (
                         <Line options={MontalbanOptions} data={selectedModel === 'rivercast' ? rivercast_montalbanChart : bidirectional_montalbanChart} className={styles['graph-class']} />
                 ) : null}
+                
                 </div>
+                )}
             </div>
+            
                 <div className={styles['selection-graph']}>
+                
                 <div
                     className={classNames(styles['mini-results'], {
                         [styles['selected']]: selectedChart === 'nangka',
                     })}
                     onClick={() => setSelectedChart('nangka')}
                 >
+                    <LoadingModal loading={loading} />
+                {!loading && (
                     <div className={styles['graph-mini-class']}>
                         <Line options={MiniNangkaOptions} data={selectedModel === 'rivercast' ? rivercast_nangkaChart : bidirectional_nangkaChart} className={styles['graph-class']} />
                     </div>
+                    )}
                 </div>
+                  
                 <div
                     className={classNames(styles['mini-results'], {
                         [styles['selected']]: selectedChart === 'stonino',
                     })}
                     onClick={() => setSelectedChart('stonino')}
-                >
+                ><LoadingModal loading={loading} />
+                {!loading && (
                     <div className={styles['graph-mini-class']}>
                         <Line options={MiniStoNinoOptions} data={selectedModel === 'rivercast' ? rivercast_stoninoChart : bidirectional_stoninoChart} className={styles['graph-class']} />
                     </div>
+                     )}
                 </div>
                 <div
                     className={classNames(styles['mini-results'], {
                         [styles['selected']]: selectedChart === 'montalban',
                     })}
                     onClick={() => setSelectedChart('montalban')}
-                >
+                ><LoadingModal loading={loading} />
+                {!loading && (
+                    
                     <div className={styles['graph-mini-class']}>
                         <Line options={MiniMontalbanOptions} data={selectedModel === 'rivercast' ? rivercast_montalbanChart : bidirectional_montalbanChart} className={styles['graph--class']} />
                     </div>
+                    )}
                 </div>
+                
             </div>
-
                         </div>
                 <div className={styles['table-results']}>
                     <div className={styles['select-station']}>
@@ -827,6 +962,8 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['title-vf']}>Experimental Results</span>
                         </div>
                         <div className={styles.table}>
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
                         <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', overflow:'hidden' }}>
                             <Table sx={{ width: 658, height: 443 }} aria-label="customized table">
                                 <TableHead>
@@ -848,9 +985,13 @@ export const Body = ({ className }: BodyProps) => {
                                     </StyledTableCell>
                                 </TableRow>
                                 </TableHead>
+                                
                                 <TableBody sx={{ border: 'none' }}>
+                               
                                 {sortedRows.map((row) => (
+                                    
                                     <StyledTableRow key={row.time.toISOString()} sx={{ border: 'none' }}>
+                                    
                                     <StyledTableCell
                                         component="th"
                                         scope="row"
@@ -862,6 +1003,7 @@ export const Body = ({ className }: BodyProps) => {
                                         year: 'numeric',
                                         })}
                                     </StyledTableCell>
+                                    
                                     <StyledTableCell
                                         align="center"
                                         sx={{ height: 10, border: 'none' }}
@@ -875,7 +1017,9 @@ export const Body = ({ className }: BodyProps) => {
                                         {row.m2}
                                     </StyledTableCell>
                                     </StyledTableRow>
+                                    
                                 ))}
+                                
                                 {totMAEsRow.map((row) => (
                                     <StyledTableRow>
                                     <StyledTableCell
@@ -900,8 +1044,10 @@ export const Body = ({ className }: BodyProps) => {
                                     </StyledTableRow>
                                     ))}
                                 </TableBody>
+                                    
                             </Table>
                             </TableContainer>
+                                    )}
                         </div>
                     </div>
                 </div>
@@ -915,11 +1061,14 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['process-1-title']}>Raw Dataset</span>
                         </div>
                         <div className={styles['center-bar-process']}>
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
                             <img
                                 src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/RawData.png" : "/src/assets/biimages/rawDataBidirectional-removebg-preview.png"}
                                 alt="Raw Dataset Image"
                                 className={styles['image-bar-process']}
                             />
+                                    )}
                         </div>
                         <div className={styles['bottom-bar-process']}>
                         <div className={styles['left-process-legends']}>
@@ -1006,11 +1155,14 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['process-1-title']}>Clean Dataset</span>
                         </div>
                         <div className={styles['center-bar-process']}>
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
                             <img
                                 src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/cleanData.png" : "/src/assets/biimages/cleanDataBidirectional-removebg-preview.png"}
                                 alt="Clean Dataset Image"
                                 className={styles['image-bar-process']}
                             />
+                                    )}
                         </div>
                         <div className={styles['bottom-bar-process-clean']}>
                             <div className={styles['left-process-legends']}>
@@ -1059,6 +1211,8 @@ export const Body = ({ className }: BodyProps) => {
                             </span>
                         </div>
                         <div className={styles['attention-scores']} >
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
                             <CCarousel controls className={styles['image-bar-process-attn-container']} interval>
                                 <CCarouselItem className={styles['image-bar-process-attn-item']}>
                                     <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output1-removebg-preview.png" : "/src/assets/biimages/output1-removebg-preview.png"} alt="slide 1" />
@@ -1085,6 +1239,7 @@ export const Body = ({ className }: BodyProps) => {
                                     </CCarouselCaption>
                                 </CCarouselItem>
                             </CCarousel>
+                                    )}
                         </div>
                     </div>
                 </div>
