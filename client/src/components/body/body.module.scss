@@ -1,3 +1,4 @@
+@import "rsuite/dist/rsuite.css";
 @font-face {
     font-family: 'PublicSansSemibold';
     src: local('PublicSansSemibold'),
@@ -204,12 +205,11 @@
     justify-content: space-between;
     align-content: center;
     width: 100%;
-    margin-bottom: 30px;
 }
 
 .drop-down {
     width: 345px;
-    height: 82px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -572,7 +572,7 @@
 
 .image-bar-process {
     width: 80%;
-    height: 80%;
+    height: 95%;
 }
 
 .image-bar-process-attn {
@@ -638,18 +638,18 @@
     border-bottom: 1px solid #33cccc;
 }
 
-.aveMaeP{
+.aveMaeP {
     color: #DBB36E;
     font-size: 14;
     font-weight: 'bold';
     font-family: 'PublicSansMedium';
-    width: 120; 
-    height: 10; 
+    width: 120;
+    height: 10;
     border: 'none';
     align-items: center;
 }
 
-.headersss{
+.headersss {
     height: 100px;
     width: 1920px;
     background-color: transparent;
@@ -675,8 +675,9 @@
     gap: 0px 20px;
     height: 100px;
     margin-left: 60px;
-  }
-  .right {
+}
+
+.right {
     width: auto;
     height: 100px;
     display: flex;
@@ -686,12 +687,14 @@
     margin-right: 60px;
     align-content: center;
     justify-content: space-between;
-  }
-  .logo {
+}
+
+.logo {
     width: 56px;
     height: 56px;
-  }
-  .navbar_title {
+}
+
+.navbar_title {
     color: black;
     line-height: normal;
     font-size: 48px;
@@ -699,11 +702,13 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'Inter';
-  }
-  .header_models {
+}
+
+.header_models {
     color: white;
-  }
-  .center {
+}
+
+.center {
     width: 228px;
     height: 100px;
     display: flex;
@@ -712,8 +717,9 @@
     justify-content: space-around;
     gap: 0px 20px;
     font-family: 'PublicSansMedium';
-  }
-  .text_mae {
+}
+
+.text_mae {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -722,45 +728,76 @@
     justify-content: start;
     font-family: 'MyFont';
     width: 292px;
-  }
-  .mae_title {
+}
+
+.mae_title {
     line-height: normal;
     font-size: 16px;
     color: white;
     font-family: 'PublicSansMedium';
-  }
-  .mae_result {
+}
+
+.mae_result {
     line-height: normal;
     font-size: 28px;
     color: #7299bf;
     font-family: 'PublicSansSemibold';
-  }
-  
-  .header_models {
+}
+
+.header_models {
     cursor: pointer;
-  }
-  .selected {
+}
+
+.selected {
     color: #7299BF;
-  }
-  .mae_logo {
+}
+
+.mae_logo {
     width: 54px;
     height: 54px;
     cursor: pointer;
     margin-right: 30px;
-  }
-  .mae_logo:hover{
+}
+
+.mae_logo:hover {
     transition: filter 0.2s ease;
     filter: drop-shadow(0 0 0.75rem #00CEFF);
-  }
-  
-  .mae_logo1 {
+}
+
+.mae_logo1 {
     width: 54px;
     height: 54px;
     cursor: pointer;
     margin-right: 30px;
-  }
-  
-  .mae_logo1:hover{
+}
+
+.mae_logo1:hover {
     transition: filter 0.2s ease;
     filter: drop-shadow(0 0 0.75rem #DBB36E);
-  }
+}
+
+
+.select-date-range{
+    width: 172px;
+}
+
+.date-range{
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.rangesContainer {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    row-gap: 25px;
+
+}

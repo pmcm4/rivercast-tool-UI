@@ -26,8 +26,10 @@ import { CCarousel, CCarouselItem, CImage, CCarouselCaption } from '@coreui/reac
 import '@coreui/coreui/dist/css/coreui.min.css'
 import DropDownCall from './Dropdown_call';
 import { useModelContext } from '../../ModelContext';
-import { Header } from '../header/header';
 import LoadingModal from '../../LoadingModal';
+import { MyCalendar } from '../calendar/calendar';
+
+
 
 export interface BodyProps {
     className?: string;
@@ -409,6 +411,15 @@ interface rivercastPredVal {
     'P.Waterlevel-2': number;
     'P.Waterlevel-3': number;
 }
+interface rivercastDateRange {
+    Datetime: Date;
+}
+
+
+interface bidirectionalDateRange {
+    Datetime: Date;
+}
+
 
 interface bidirectionalTrueVal {
     DateTime: Date;
@@ -453,13 +464,41 @@ interface bidirectionalTotMAE{
     'tMAE': number;
 }
 
+interface rc_DR_Data {
+    Datetime: Date;
+    'P_Waterlevel': number;
+    'P_Waterlevel.1': number;
+    'P_Waterlevel.2': number;
+    'P_Waterlevel.3': number;
+
+    'T_Waterlevel': number;
+    'T_Waterlevel.1': number;
+    'T_Waterlevel.2': number;
+    'T_Waterlevel.3': number;
+}
+
+interface bi_DR_Data {
+    Datetime: Date;
+    'P_Waterlevel': number;
+    'P_Waterlevel.1': number;
+    'P_Waterlevel.2': number;
+    'P_Waterlevel.3': number;
+
+    'T_Waterlevel': number;
+    'T_Waterlevel.1': number;
+    'T_Waterlevel.2': number;
+    'T_Waterlevel.3': number;
+}
+
 export const Body = ({ className }: BodyProps) => {
     const [rivercastTrueValData, setrivercastTrueValData] = useState<rivercastTrueVal[]>([]);
     const [rivercastPredData, setrivercastPredData] = useState<rivercastPredVal[]>([]);
 
+
     const [bidirectionalTrueValData, setbidirectionalTrueValData] = useState<bidirectionalTrueVal[]>([]);
     const [bidirectionalPredData, setbidirectionalPredData] = useState<bidirectionalPredVal[]>([]);
     const [selectedChart, setSelectedChart] = useState('nangka');
+    const [getDateRangeLabels, setgetDateRangeLabels] = useState('False');
 
     const [rivercastMAE_Data, setrcMAEDATA] = useState<rivercastMAE[]>([]);
     const [bidirectionalMAE_Data, setbiMAEDATA] = useState<bidirectionalMAE[]>([]);
@@ -468,6 +507,9 @@ export const Body = ({ className }: BodyProps) => {
     const [biTotMAE, setbiTotMAE] = useState<bidirectionalTotMAE[]>([]);
 
     const { selectedModel, setSelectedModel} = useModelContext();
+
+    const [rivercastDateRangeData, setrivercastDateRangeData] = useState<rivercastDateRange[]>([]);
+    const [bidirectionalDateRangeData, setbidirectionalDateRangeData] = useState<bidirectionalDateRange[]>([]);
 
 
     const [loading, setLoading] = useState(true);
@@ -558,10 +600,109 @@ export const Body = ({ className }: BodyProps) => {
         fetchRivercastData();
         fetchBidirectionalData();
     }, []);
+    
+
+    const fetchRivercastData = async () => {
+        try {
+            const trueValuesResponse = await fetch('http://localhost:3001/api/data/rivercast_waterlevel_obs');
+            const rc_MAE = await fetch('http://localhost:3001/api/rcmae/rivercast_df_with_MAE');
+            const rc_tot_MAE = await fetch('http://localhost:3001/api/totrcmae/rivercast_overall_MAEs');
+
+            const trueValuesData = await trueValuesResponse.json();
+            const rc_MAE_Data = await rc_MAE.json();
+            const rc_tot_MAE_Data = await rc_tot_MAE.json()
+            
+            setrivercastTrueValData(trueValuesData);
+            setrcMAEDATA(rc_MAE_Data);
+            setrcTotMAE(rc_tot_MAE_Data);
+            console.log('Fetch RC True Success')
+        } catch (error) {
+            console.error('Error fetching Rivercast Model data:', error);
+        }
+    };
+
+    // Fetch data for Bidirectional Model
+    const fetchBidirectionalData = async () => {
+        try {
+            const trueValuesResponse = await fetch('http://localhost:3001/api/data/bidirectional_waterlevel_obs');
+            const bi_MAE = await fetch('http://localhost:3001/api/bimae/bidirectional_df_with_MAE');
+            const bi_tot_MAE = await fetch('http://localhost:3001/api/totbimae/bidirectional_overall_MAEs');
+
+
+            const trueValuesData = await trueValuesResponse.json();
+            const bi_MAE_Data = await bi_MAE.json();
+            const bi_tot_MAE_Data = await bi_tot_MAE.json()
+
+            setbiMAEDATA(bi_MAE_Data);
+            setbidirectionalTrueValData(trueValuesData);
+            setbiTotMAE(bi_tot_MAE_Data);
+            console.log('Fetch Bi True Success')
+        } catch (error) {
+            console.error('Error fetching Bidirectional Model data:', error);
+        }
+    };
+
+    const fetchRivercastDataPred = async () => {
+        try {
+
+            const predictedValuesResponse = await fetch('http://localhost:3001/api/data/rivercast_waterlevel_prediction');
+            const predictedValuesData = await predictedValuesResponse.json();
+
+            setrivercastPredData(predictedValuesData);
+            console.log('Fetch RC True Success')
+        } catch (error) {
+            console.error('Error fetching Rivercast Model data:', error);
+        }
+    };
+
+    // Fetch data for Bidirectional Model
+    const fetchBidirectionalDataPred = async () => {
+        try {
+                const predictedValuesResponse = await fetch('http://localhost:3001/api/data/bidirectional_waterlevel_prediction');
+
+
+
+                const predictedValuesData = await predictedValuesResponse.json();
+
+
+                setbidirectionalPredData(predictedValuesData);
+            console.log('Fetch Bi True Success')
+        } catch (error) {
+            console.error('Error fetching Bidirectional Model data:', error);
+        }
+    };
+
+    const fetchDateRange = async (formattedStartDate: string, formattedEndDate: string) => {
+        try {
+          // Use the received parameters directly
+          const sDate = formattedStartDate;
+          const eDate = formattedEndDate;
+      
+          console.log(sDate, eDate);
+      
+          const rc_DR = await fetch(`http://localhost:3001/api/data/rivercast_daterange_data/${sDate}/${eDate}`);
+          const rc_DR_Data = await rc_DR.json();
+      
+          const bi_DR = await fetch(`http://localhost:3001/api/data/bidirectional_daterange_data/${sDate}/${eDate}`);
+          const bi_DR_Data = await bi_DR.json();
+      
+          setrivercastTrueValData(rc_DR_Data);
+          setrivercastPredData(rc_DR_Data);
+          setbidirectionalTrueValData(bi_DR_Data);
+          setbidirectionalPredData(bi_DR_Data);
+          setrivercastDateRangeData(rc_DR_Data);
+          setbidirectionalDateRangeData(bi_DR_Data);
+          setgetDateRangeLabels('True')
+          
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
     const [selectedFilter, setSelectedFilter] = useState('All');
     // data values for rivercast
     const rivercast_nangkaChart = {
-        labels: rivercastPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? rivercastPredData.map((item) => formatDate(item.DateTime)) : rivercastDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -585,7 +726,7 @@ export const Body = ({ className }: BodyProps) => {
       };
 
     const rivercast_stoninoChart = {
-        labels: rivercastPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? rivercastPredData.map((item) => formatDate(item.DateTime)) : rivercastDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -609,7 +750,7 @@ export const Body = ({ className }: BodyProps) => {
     };
 
     const rivercast_montalbanChart = {
-        labels: rivercastPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? rivercastPredData.map((item) => formatDate(item.DateTime)) : rivercastDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -634,7 +775,7 @@ export const Body = ({ className }: BodyProps) => {
 
     // data values for bidirectional
     const bidirectional_nangkaChart = {
-        labels: bidirectionalPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? bidirectionalPredData.map((item) => formatDate(item.DateTime)) : bidirectionalDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -658,7 +799,7 @@ export const Body = ({ className }: BodyProps) => {
       };
 
     const bidirectional_stoninoChart = {
-        labels: bidirectionalPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? bidirectionalPredData.map((item) => formatDate(item.DateTime)) : bidirectionalDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -682,7 +823,7 @@ export const Body = ({ className }: BodyProps) => {
       };
 
     const bidirectional_montalbanChart = {
-        labels: bidirectionalPredData.map((item) => formatDate(item.DateTime)),
+        labels: getDateRangeLabels === 'False' ? bidirectionalPredData.map((item) => formatDate(item.DateTime)) : bidirectionalDateRangeData.map((item) => formatDate(item.Datetime)),
         datasets: [
           selectedFilter === 'All' || selectedFilter === 'Actual'
             ? {
@@ -758,30 +899,63 @@ export const Body = ({ className }: BodyProps) => {
 
     const checkForNewData = () => {
         // Fetch data for Rivercast Model
-        const fetchPredictionDataRc = async () => {
+        const fetchTrueValRC = async () => {
             try {
-                const updatePredictionRC = await fetch('http://127.0.0.1:5000/addRCTrueValuesToDB');
-                const updatePredictionRCRes = await updatePredictionRC.json()
-                console.log(updatePredictionRCRes)
+                const updateTrueRC = await fetch('http://127.0.0.1:5000/addRCTrueValuesToDB');
+                const updateTrueRCRes = await updateTrueRC.json()
+                
+                const updateMae = await fetch('http://127.0.0.1:5000/getrivercastMAE');
+                const updateMaeRes = await updateMae.json()
+
+                console.log(updateTrueRCRes)
+                console.log(updateMaeRes)
+                fetchRivercastData()
             } catch (error) {
                 console.error('Error fetching Forecast Rivercast Model data:', error);
             }
         };
-        const fetchPredictionDataBi = async () => {
+        const fetchTrueValBi = async () => {
             try {
                 const updatePredictionBi = await fetch('http://127.0.0.1:5000/addBiTrueValuesToDB');
                 const updateTrueValuesBiRes = await updatePredictionBi.json()
                 console.log(updateTrueValuesBiRes)
+                fetchBidirectionalData()
             } catch (error) {
                 console.error('Error fetching Forecast Bidirectional Model data:', error);
             }
         };
-        {selectedModel === 'rivercast' ? fetchPredictionDataRc() : fetchPredictionDataBi()}
-        
+        {selectedModel === 'rivercast' ? fetchTrueValRC() : fetchTrueValBi()}
+    }
+
+    const checkForNewDataPred = () => {
+        // Fetch data for Rivercast Model
+        const fetchPredValRC = async () => {
+            try {
+                const updatePredRC = await fetch('http://127.0.0.1:5000/addRCPredictionToDB');
+                const updatePredRCRes = await updatePredRC.json()
+
+                console.log(updatePredRCRes)
+                fetchRivercastDataPred()
+            } catch (error) {
+                console.error('Error fetching Forecast Rivercast Model data:', error);
+            }
+        };
+        const fetchPredValBi = async () => {
+            try {
+                const updatePredictionBi = await fetch('http://127.0.0.1:5000/addBiPredictionToDB');
+                const updatePredValuesBiRes = await updatePredictionBi.json()
+                console.log(updatePredValuesBiRes)
+                fetchBidirectionalDataPred()
+            } catch (error) {
+                console.error('Error fetching Forecast Bidirectional Model data:', error);
+            }
+        };
+        {selectedModel === 'rivercast' ? fetchPredValRC() : fetchPredValBi()}
     }
 
 
-  const sortedRows = [...rows].sort((a, b) => b.time - a.time);
+    const sortedRows = [...rows].sort((a, b) => b.time - a.time);
+
 
     return (
         <div className={classNames(styles.root, className)}>
@@ -824,7 +998,7 @@ export const Body = ({ className }: BodyProps) => {
                     src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1700649214/fi-bs-target_yyiify_1_copy_a9e2qy.png"
                     alt=""
                     className={styles.mae_logo1}
-                    
+                    onClick={checkForNewDataPred}
                 />
                  <LoadingModal loading={loading} />
                         {!loading && (
@@ -943,12 +1117,23 @@ export const Body = ({ className }: BodyProps) => {
                                     </span>
                                 </div>
                             </div>
+                            <div className={styles['rangesContainer']}>
                             <div className={styles['drop-down']}>
                                 <div className={styles['dd-title']}>
                                     <span className={styles['drop-down-text']}>FILTER</span>
                                 </div>
                                 <DropDownCall setSelectedFilter={setSelectedFilter} />
 
+                            </div>
+                            <div className={styles['date-range']}>
+                                <div className={styles['dd-title']}>
+                                    <span className={styles['drop-down-text']}>DATE RANGE</span>
+                                </div>
+                                <div className={styles['date-range-div']}>
+                                    <MyCalendar onDateRangeChange={fetchDateRange}/>
+                                </div>
+
+                            </div>
                             </div>
                         </div>
                     </div>

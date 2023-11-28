@@ -8,10 +8,10 @@ const port = 3001;
 app.use(cors());
 
 const dbConfig = {
-  host: 'database-1.cccp1zhjxtzi.ap-southeast-1.rds.amazonaws.com',
-  user: 'admin',
-  password: 'Nath1234',
-  database: 'rivercast',
+  host: 'localhost',
+  user: 'root',
+  password: 'pmcm4',
+  database: 'rivercast_model',
 };
 
 const connection = mysql.createConnection(dbConfig);
@@ -23,6 +23,24 @@ connection.connect((err) => {
     console.log('Connected to database');
   }
 });
+
+app.get('/api/data/:table/:startDate/:endDate', (req, res) => {
+  const { table } = req.params;
+  const { startDate } = req.params;
+  const { endDate } = req.params;
+  const query = `SELECT * FROM ${table} WHERE Datetime BETWEEN '${startDate}' AND '${endDate}';`;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error('Error executing query:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
 
 app.get('/api/data/:table', (req, res) => {
   const { table } = req.params;

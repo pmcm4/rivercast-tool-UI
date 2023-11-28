@@ -7,6 +7,7 @@ import { Body } from './components/body/body';
 import { Footer } from './components/footer/footer';
 import { ModelProvider } from './ModelContext';
 import LoadingModal from './LoadingModal'; // Adjust the import path accordingly
+import { MyCalendar } from './components/calendar/calendar';
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -19,9 +20,8 @@ function App() {
     return (
         <div className={styles.App}>
           <ModelProvider>
-
-                <Body />
-                <Footer />
+            <Body/>
+            <Footer/>
           </ModelProvider>
         </div>
       );
