@@ -455,13 +455,13 @@ interface bidirectionalMAE {
 interface rivercastTotMAE{
     index: number;
     'aMAE': number;
-    'tMAE': number;
+    'std': number;
 }
 
 interface bidirectionalTotMAE{
     index: number;
     'aMAE': number;
-    'tMAE': number;
+    'std': number;
 }
 
 interface rc_DR_Data {
@@ -600,6 +600,27 @@ export const Body = ({ className }: BodyProps) => {
         fetchRivercastData();
         fetchBidirectionalData();
     }, []);
+
+    const fetchMetrics = async () => {
+        try {
+            const bi_MAE = await fetch('http://localhost:3001/api/bimae/bidirectional_df_with_MAE');
+            const bi_tot_MAE = await fetch('http://localhost:3001/api/totbimae/bidirectional_overall_MAEs');
+            const rc_MAE = await fetch('http://localhost:3001/api/rcmae/rivercast_df_with_MAE');
+            const rc_tot_MAE = await fetch('http://localhost:3001/api/totrcmae/rivercast_overall_MAEs');
+
+            const bi_MAE_Data = await bi_MAE.json();
+            const bi_tot_MAE_Data = await bi_tot_MAE.json()
+            const rc_MAE_Data = await rc_MAE.json();
+            const rc_tot_MAE_Data = await rc_tot_MAE.json()
+
+            setbiMAEDATA(bi_MAE_Data);
+            setbiTotMAE(bi_tot_MAE_Data);
+            setrcMAEDATA(rc_MAE_Data);
+            setrcTotMAE(rc_tot_MAE_Data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
     
 
     const fetchRivercastData = async () => {
@@ -876,8 +897,10 @@ export const Body = ({ className }: BodyProps) => {
     function createData2(
         m3: number,
         m4: number,
+        m5: number,
+        m6: number,
     ) {
-        return {m3, m4};
+        return {m3, m4, m5, m6};
     }
 
   // Map the data and create rows
@@ -894,6 +917,8 @@ export const Body = ({ className }: BodyProps) => {
     createData2(
         item['aMAE'],
         biTotMAE[index] ? biTotMAE[index]['aMAE'] : 0,
+        item['std'],
+        biTotMAE[index] ? biTotMAE[index]['std'] : 0,
     )
     );
 
@@ -904,11 +929,8 @@ export const Body = ({ className }: BodyProps) => {
                 const updateTrueRC = await fetch('http://127.0.0.1:5000/addRCTrueValuesToDB');
                 const updateTrueRCRes = await updateTrueRC.json()
                 
-                const updateMae = await fetch('http://127.0.0.1:5000/getrivercastMAE');
-                const updateMaeRes = await updateMae.json()
 
                 console.log(updateTrueRCRes)
-                console.log(updateMaeRes)
                 fetchRivercastData()
             } catch (error) {
                 console.error('Error fetching Forecast Rivercast Model data:', error);
@@ -951,6 +973,26 @@ export const Body = ({ className }: BodyProps) => {
             }
         };
         {selectedModel === 'rivercast' ? fetchPredValRC() : fetchPredValBi()}
+    }
+
+    const getMetrics = () => {
+        // Fetch data for Rivercast Model
+        const fetchTrueValRC = async () => {
+            try {
+                const updateRCMae = await fetch('http://127.0.0.1:5000/getrivercastMAE');
+                const updateRCMaeRes = await updateRCMae.json()
+
+                const updateBiMae = await fetch('http://127.0.0.1:5000/getBidirectionalMAE');
+                const updateBiMaeRes = await updateBiMae.json()
+
+                console.log(updateRCMaeRes)
+                console.log(updateBiMaeRes)
+                fetchMetrics()
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchTrueValRC()
     }
 
 
@@ -1143,6 +1185,7 @@ export const Body = ({ className }: BodyProps) => {
                                 src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699771433/icon_urry4k.png"
                                 alt=""
                                 className={styles['icon-title-bar']}
+                                onClick={getMetrics}
                             />
                             <span className={styles['title-vf']}>Experimental Results</span>
                         </div>
@@ -1225,6 +1268,30 @@ export const Body = ({ className }: BodyProps) => {
                                             sx={{ height: 10, border: 'none' }}
                                             >
                                             <span className={styles['aveMaeP']}>{row.m4}</span>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                    ))}
+
+                                {totMAEsRow.map((row) => (
+                                    <StyledTableRow>
+                                    <StyledTableCell
+                                        component="th"
+                                        scope="row"
+                                        sx={{ width: 120, height: 10, border: 'none'}}
+                                    >
+                                        <span className={styles['aveMaeP']}>Standard Deviation</span>
+                                    </StyledTableCell>
+                                        <StyledTableCell 
+                                            align="center"
+                                            sx={{ height: 10, border: 'none' }}
+                                            >
+                                            <span className={styles['aveMaeP']}>{row.m5}</span>
+                                        </StyledTableCell>
+                                        <StyledTableCell 
+                                            align="center"
+                                            sx={{ height: 10, border: 'none' }}
+                                            >
+                                            <span className={styles['aveMaeP']}>{row.m6}</span>
                                         </StyledTableCell>
                                     </StyledTableRow>
                                     ))}

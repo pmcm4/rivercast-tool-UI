@@ -30,6 +30,7 @@
     justify-content: space-evenly;
     margin-top: 30px;
     column-gap: 16px;
+    margin-bottom: 30px;
 }
 
 .bottom-body {
@@ -100,12 +101,11 @@
 .select-station {}
 
 .tabular-results {
-    height: 513px;
+    height: 590px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-items: center;
-    justify-content: space-between;
     align-content: center;
 }
 
@@ -186,6 +186,7 @@
 .icon-title-bar {
     width: 25.64px;
     height: 25px;
+    cursor: pointer;
 }
 
 .stations {
@@ -308,7 +309,7 @@
 .drop-down-vector {}
 
 .table {
-    height: 443px;
+    height: 550px;
     width: 100%;
     background-color: rgba(14, 19, 24, 0);
     background-image: none;

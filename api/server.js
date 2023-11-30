@@ -86,7 +86,7 @@ app.get('/api/bimae/:table', (req, res) => {
 
 app.get('/api/totrcmae/:table', (req, res) => {
   const { table } = req.params;
-  const query = `SELECT cnt, aMAE, tMAE FROM ${table} order by cnt DESC limit 1`;
+  const query = `SELECT cnt, aMAE, std FROM ${table} order by cnt DESC limit 1`;
 
   connection.query(query, (error, results) => {
     if (error) {
@@ -100,7 +100,7 @@ app.get('/api/totrcmae/:table', (req, res) => {
 
 app.get('/api/totbimae/:table', (req, res) => {
   const { table } = req.params;
-  const query = `SELECT cnt, aMAE, tMAE FROM ${table} order by cnt DESC limit 1`;
+  const query = `SELECT cnt, aMAE, std FROM ${table} order by cnt DESC limit 1`;
 
   connection.query(query, (error, results) => {
     if (error) {
