@@ -60,6 +60,10 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+const StyledTableRowMetrics = styled(TableRow)(({ theme }) => ({
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+}));
+
 
 
 
@@ -463,32 +467,12 @@ interface bidirectionalTotMAE{
     'aMAE': number;
     'std': number;
 }
-
-interface rc_DR_Data {
-    Datetime: Date;
-    'P_Waterlevel': number;
-    'P_Waterlevel.1': number;
-    'P_Waterlevel.2': number;
-    'P_Waterlevel.3': number;
-
-    'T_Waterlevel': number;
-    'T_Waterlevel.1': number;
-    'T_Waterlevel.2': number;
-    'T_Waterlevel.3': number;
+interface pvalData{
+    index: number;
+    'pvalue': number;
 }
 
-interface bi_DR_Data {
-    Datetime: Date;
-    'P_Waterlevel': number;
-    'P_Waterlevel.1': number;
-    'P_Waterlevel.2': number;
-    'P_Waterlevel.3': number;
 
-    'T_Waterlevel': number;
-    'T_Waterlevel.1': number;
-    'T_Waterlevel.2': number;
-    'T_Waterlevel.3': number;
-}
 
 export const Body = ({ className }: BodyProps) => {
     const [rivercastTrueValData, setrivercastTrueValData] = useState<rivercastTrueVal[]>([]);
@@ -502,6 +486,8 @@ export const Body = ({ className }: BodyProps) => {
 
     const [rivercastMAE_Data, setrcMAEDATA] = useState<rivercastMAE[]>([]);
     const [bidirectionalMAE_Data, setbiMAEDATA] = useState<bidirectionalMAE[]>([]);
+
+    const [pValue_Data, setpValue] = useState<pvalData[]>([]);
 
     const [rcTotMAE, setrcTotMAE] = useState<rivercastTotMAE[]>([]);
     const [biTotMAE, setbiTotMAE] = useState<bidirectionalTotMAE[]>([]);
@@ -596,11 +582,25 @@ export const Body = ({ className }: BodyProps) => {
             }
         };
 
+        const fetchpValue = async () => {
+            try {
+                const pValRes = await fetch('http://localhost:3001/api/pval/pvalue');
+                const pVal_Data = await pValRes.json();
+
+                setpValue(pVal_Data);
+
+                
+            } catch (error) {
+                console.error('Error fetching Bidirectional Model data:', error);
+            }
+        };
+
         // Execute both fetch functions
         fetchRivercastData();
         fetchBidirectionalData();
+        fetchpValue();
     }, []);
-
+    
     const fetchMetrics = async () => {
         try {
             const bi_MAE = await fetch('http://localhost:3001/api/bimae/bidirectional_df_with_MAE');
@@ -714,6 +714,8 @@ export const Body = ({ className }: BodyProps) => {
           setrivercastDateRangeData(rc_DR_Data);
           setbidirectionalDateRangeData(bi_DR_Data);
           setgetDateRangeLabels('True')
+
+          console.log(rc_DR_Data)
           
         } catch (error) {
           console.error(error);
@@ -903,6 +905,12 @@ export const Body = ({ className }: BodyProps) => {
         return {m3, m4, m5, m6};
     }
 
+    function createData3(
+        m1: number,
+    ) {
+        return {m1}
+    }
+
   // Map the data and create rows
   const rows = rivercastMAE_Data.map((item, index) =>
     createData(
@@ -921,6 +929,13 @@ export const Body = ({ className }: BodyProps) => {
         biTotMAE[index] ? biTotMAE[index]['std'] : 0,
     )
     );
+    
+    const pValsRow = pValue_Data.map((item, index) =>
+    createData3(
+        item['pvalue'],
+    )
+    );
+    
 
     const checkForNewData = () => {
         // Fetch data for Rivercast Model
@@ -1224,6 +1239,7 @@ export const Body = ({ className }: BodyProps) => {
                                         component="th"
                                         scope="row"
                                         sx={{ width: 120,height: 10, border: 'none'}}
+                                        align="right"
                                     >
                                         {row.time.toLocaleDateString('en-US', {
                                         month: 'short',
@@ -1249,10 +1265,11 @@ export const Body = ({ className }: BodyProps) => {
                                 ))}
                                 
                                 {totMAEsRow.map((row) => (
-                                    <StyledTableRow>
+                                    <StyledTableRowMetrics>
                                     <StyledTableCell
                                         component="th"
                                         scope="row"
+                                        align="right"
                                         sx={{ width: 120, height: 10, border: 'none'}}
                                     >
                                         <span className={styles['aveMaeP']}>Average MAE</span>
@@ -1269,17 +1286,18 @@ export const Body = ({ className }: BodyProps) => {
                                             >
                                             <span className={styles['aveMaeP']}>{row.m4}</span>
                                         </StyledTableCell>
-                                    </StyledTableRow>
+                                    </StyledTableRowMetrics>
                                     ))}
 
                                 {totMAEsRow.map((row) => (
-                                    <StyledTableRow>
+                                    <StyledTableRowMetrics>
                                     <StyledTableCell
                                         component="th"
                                         scope="row"
                                         sx={{ width: 120, height: 10, border: 'none'}}
+                                        align="right"
                                     >
-                                        <span className={styles['aveMaeP']}>Standard Deviation</span>
+                                        <span className={styles['aveMaeP']}>STD Deviation</span>
                                     </StyledTableCell>
                                         <StyledTableCell 
                                             align="center"
@@ -1293,7 +1311,29 @@ export const Body = ({ className }: BodyProps) => {
                                             >
                                             <span className={styles['aveMaeP']}>{row.m6}</span>
                                         </StyledTableCell>
-                                    </StyledTableRow>
+                                    </StyledTableRowMetrics>
+                                    ))}
+
+                                    
+                                {pValsRow.map((row) => (
+                                    <StyledTableRowMetrics>
+                                    <StyledTableCell
+                                        component="th"
+                                        scope="row"
+                                        sx={{ width: 120, height: 10, border: 'none'}}
+                                        align="right"
+                                        
+                                    >
+                                        <span className={styles['aveMaeP']}>P-Value</span>
+                                    </StyledTableCell>
+                                        <StyledTableCell 
+                                            align="center"
+                                            sx={{ height: 10, border: 'none' }}
+                                            colSpan={3}
+                                            >
+                                            <span className={styles['aveMaeP']}>{row.m1}</span>
+                                        </StyledTableCell>
+                                    </StyledTableRowMetrics>
                                     ))}
                                 </TableBody>
                                     
