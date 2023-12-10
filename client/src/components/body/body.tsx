@@ -460,6 +460,13 @@ interface pvalData{
     'pvalue': number;
 }
 
+interface paramsData{
+    'RF-Intensity.3': number;
+    'Precipitation': number;
+    'Humidity': number;
+    'Temperature': number;
+}
+
 
 
 export const Body = ({ className }: BodyProps) => {
@@ -480,13 +487,18 @@ export const Body = ({ className }: BodyProps) => {
     const [rcTotMAE, setrcTotMAE] = useState<rivercastTotMAE[]>([]);
     const [biTotMAE, setbiTotMAE] = useState<bidirectionalTotMAE[]>([]);
 
+    const [params, setParams] = useState<paramsData[]>([]);
+
     const { selectedModel, setSelectedModel} = useModelContext();
 
     const [rivercastDateRangeData, setrivercastDateRangeData] = useState<rivercastDateRange[]>([]);
     const [bidirectionalDateRangeData, setbidirectionalDateRangeData] = useState<bidirectionalDateRange[]>([]);
 
+    
+
 
     const [loading, setLoading] = useState(true);
+
 
     const handleDataFetchComplete = () => {
       setLoading(false);
@@ -519,6 +531,27 @@ export const Body = ({ className }: BodyProps) => {
       
         fetchLatestData();
       }, []);
+
+
+      useEffect(() => {
+        // Fetch data for Rivercast Model
+        const fetchParamsData = async () => {
+            try {
+                const paramsResponse = await fetch('http://localhost:3001/api/params/parameters');
+                
+                const paramsData = await paramsResponse.json();
+                
+                setParams(paramsData);
+
+            } catch (error) {
+                console.error('Error fetching Parameters data:', error);
+            }
+        };
+
+        // Execute both fetch functions
+        fetchParamsData();
+    }, []);
+    
   
 
     
@@ -884,6 +917,7 @@ export const Body = ({ className }: BodyProps) => {
         return { time, m1, m2};
     }
 
+
     function createData2(
         m3: number,
         m4: number,
@@ -898,6 +932,16 @@ export const Body = ({ className }: BodyProps) => {
     ) {
         return {m1}
     }
+
+    function createData4(
+        m1: number,
+        m2: number,
+        m3: number,
+        m4: number,
+    ) {
+        return {m1, m2, m3, m4};
+    }
+
 
   // Map the data and create rows
   const rows = rivercastMAE_Data.map((item, index) =>
@@ -917,7 +961,16 @@ export const Body = ({ className }: BodyProps) => {
         biTotMAE[index] ? biTotMAE[index]['std'] : 0,
     )
     );
-    
+
+    const getParameters = params.map((item, index) =>
+    createData4(
+        item['RF-Intensity.3'],
+        item['Precipitation'],
+        item['Humidity'],
+        item['Temperature'],
+    )
+    );
+    console.log(getParameters)
     const pValsRow = pValue_Data.map((item, index) =>
     createData3(
         item['pvalue'],
@@ -1177,6 +1230,7 @@ export const Body = ({ className }: BodyProps) => {
                             </div>
                         </div>
                     </div>
+                    {getParameters.map((row, index) => (
                     <div className={styles['tabular-results']}>
                         <div className={styles['title-bar-visualize']}>
                             <img
@@ -1191,11 +1245,12 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['station-title']}>
                                     Nangka
                             </span>
+                        
                             <div className={styles['inner-params-container']}>
                             <div className={styles['params']}>
                                 <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Temperature</span>
-                                <span className={styles['params-value-temp']}>25°C</span>
+                                <span className={styles['params-value-temp']}> {row.m4.toFixed(2)}°C</span>
                                 </div>
 
                                 <div className={styles['params-icon-temp']}>
@@ -1205,7 +1260,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-1</span>
-                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                <span className={styles['params-value-preci1']}>{row.m1.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci1']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
@@ -1214,7 +1269,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Humidity</span>
-                                <span className={styles['params-value-humi']}>69</span>
+                                <span className={styles['params-value-humi']}>{row.m3.toFixed(2)} g</span>
                                 </div>
                                 <div className={styles['params-icon-humi']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
@@ -1223,7 +1278,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-2</span>
-                                <span className={styles['params-value-preci2']}>69</span>
+                                <span className={styles['params-value-preci2']}>{row.m2.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci2']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
@@ -1231,6 +1286,7 @@ export const Body = ({ className }: BodyProps) => {
                             </div>
 
                             </div>
+                            
 
 
                             </div>
@@ -1242,7 +1298,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                                 <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Temperature</span>
-                                <span className={styles['params-value-temp']}>25°C</span>
+                                <span className={styles['params-value-temp']}>{row.m4.toFixed(2)}°C</span>
                                 </div>
 
                                 <div className={styles['params-icon-temp']}>
@@ -1252,7 +1308,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-1</span>
-                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                <span className={styles['params-value-preci1']}>{row.m1.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci1']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
@@ -1261,7 +1317,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Humidity</span>
-                                <span className={styles['params-value-humi']}>69</span>
+                                <span className={styles['params-value-humi']}>{row.m3.toFixed(2)} g</span>
                                 </div>
                                 <div className={styles['params-icon-humi']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
@@ -1270,7 +1326,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-2</span>
-                                <span className={styles['params-value-preci2']}>69</span>
+                                <span className={styles['params-value-preci2']}>{row.m2.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci2']}>
                                     <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
@@ -1279,8 +1335,11 @@ export const Body = ({ className }: BodyProps) => {
 
                             </div>
 
+                            
+
 
                             </div>
+                            
 
                             <div className={styles['params-main-container']}>
                             <span className={styles['station-title']}>
@@ -1290,7 +1349,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                                 <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Temperature</span>
-                                <span className={styles['params-value-temp']}>25°C</span>
+                                <span className={styles['params-value-temp']}>{row.m4.toFixed(2)}°C</span>
                                 </div>
 
                                 <div className={styles['params-icon-temp']}>
@@ -1300,7 +1359,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-1</span>
-                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                <span className={styles['params-value-preci1']}>{row.m1.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci1']}>
                                     <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
@@ -1309,7 +1368,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Humidity</span>
-                                <span className={styles['params-value-humi']}>69</span>
+                                <span className={styles['params-value-humi']}>{row.m3.toFixed(2)} g</span>
                                 </div>
                                 <div className={styles['params-icon-humi']}>
                                     <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
@@ -1318,7 +1377,7 @@ export const Body = ({ className }: BodyProps) => {
                             <div className={styles['params']}>
                             <div className={styles['params-title-container']}>
                                 <span className={styles['params-title']}>Rainfall-2</span>
-                                <span className={styles['params-value-preci2']}>69</span>
+                                <span className={styles['params-value-preci2']}>{row.m2.toFixed(2)} mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci2']}>
                                     <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
@@ -1329,7 +1388,10 @@ export const Body = ({ className }: BodyProps) => {
 
 
                             </div>
+                           
+                            
                     </div>
+                    ))}
                 </div>
             </div>
 
