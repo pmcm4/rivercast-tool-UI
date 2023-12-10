@@ -1199,7 +1199,7 @@ export const Body = ({ className }: BodyProps) => {
                                 </div>
 
                                 <div className={styles['params-icon-temp']}>
-                                    <img src={" "}/>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175889/Vector_tspz8j.png"}/>
                                 </div>
                             </div>
                             <div className={styles['params']}>
@@ -1208,7 +1208,7 @@ export const Body = ({ className }: BodyProps) => {
                                 <span className={styles['params-value-preci1']}>0.5 mm</span>
                                 </div>
                                 <div className={styles['params-icon-preci1']}>
-                                    <img src={" "}/>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
                                 </div>
                             </div>
                             <div className={styles['params']}>
@@ -1217,7 +1217,7 @@ export const Body = ({ className }: BodyProps) => {
                                 <span className={styles['params-value-humi']}>69</span>
                                 </div>
                                 <div className={styles['params-icon-humi']}>
-                                    <img src={" "}/>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
                                 </div>
                             </div>
                             <div className={styles['params']}>
@@ -1226,7 +1226,7 @@ export const Body = ({ className }: BodyProps) => {
                                 <span className={styles['params-value-preci2']}>69</span>
                                 </div>
                                 <div className={styles['params-icon-preci2']}>
-                                    <img src={" "}/>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
                                 </div>
                             </div>
 
@@ -1238,6 +1238,46 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['station-title']}>
                                     Sto. Nino
                             </span>
+                            <div className={styles['inner-params-container']}>
+                            <div className={styles['params']}>
+                                <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Temperature</span>
+                                <span className={styles['params-value-temp']}>25°C</span>
+                                </div>
+
+                                <div className={styles['params-icon-temp']}>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175889/Vector_tspz8j.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-1</span>
+                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                </div>
+                                <div className={styles['params-icon-preci1']}>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Humidity</span>
+                                <span className={styles['params-value-humi']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-humi']}>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-2</span>
+                                <span className={styles['params-value-preci2']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-preci2']}>
+                                    <img src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
+                                </div>
+                            </div>
+
+                            </div>
 
 
                             </div>
@@ -1246,6 +1286,46 @@ export const Body = ({ className }: BodyProps) => {
                             <span className={styles['station-title']}>
                                     Montalban
                             </span>
+                            <div className={styles['inner-params-container']}>
+                            <div className={styles['params']}>
+                                <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Temperature</span>
+                                <span className={styles['params-value-temp']}>25°C</span>
+                                </div>
+
+                                <div className={styles['params-icon-temp']}>
+                                    <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175889/Vector_tspz8j.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-1</span>
+                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                </div>
+                                <div className={styles['params-icon-preci1']}>
+                                    <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_1_cs5hdn.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Humidity</span>
+                                <span className={styles['params-value-humi']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-humi']}>
+                                    <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Group_3127_sbtbsa.png"}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-2</span>
+                                <span className={styles['params-value-preci2']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-preci2']}>
+                                    <img className={styles['params-icon']} src={"https://res.cloudinary.com/dgb2lnz2i/image/upload/v1702175888/Vector_2_nthhsh.png"}/>
+                                </div>
+                            </div>
+
+                            </div>
 
 
                             </div>
