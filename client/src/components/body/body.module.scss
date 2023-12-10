@@ -9,6 +9,10 @@
     font-family: 'PublicSansMedium';
     src: local('PublicSansMedium'), url(/src/assets/fonts/PublicSans-Medium.ttf) format('truetype');
 }
+@font-face {
+    font-family: 'PublicSansBold';
+    src: local('PublicSansBold'), url(/src/assets/fonts/PublicSansBold.ttf) format('truetype');
+}
 
 @font-face {
     font-family: 'Inter';
@@ -60,7 +64,7 @@
     height: 800px;
     display: flex;
     flex-direction: column;
-    row-gap: 39px;
+    row-gap: 10px;
 }
 
 .graph-process {
@@ -101,12 +105,13 @@
 .select-station {}
 
 .tabular-results {
-    height: 590px;
+    height: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-items: center;
     align-content: center;
+    gap: 20px;
 }
 
 .mini-results {
@@ -190,11 +195,9 @@
 }
 
 .stations {
-    height: 177px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 31px;
 }
 
 .legends {
@@ -227,18 +230,18 @@
     align-items: start;
     align-content: start;
     justify-content: start;
+    margin-left: 60px;
+
 }
 
 .color-legends {
-    width: 135px;
+    width: 180px;
     height: 48px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     justify-items: start;
-    align-items: start;
-    align-content: center;
-    color: 949494;
+    align-items: center;
 }
 
 .station-span {
@@ -540,7 +543,7 @@
     justify-items: center;
     align-content: center;
     justify-content: center;
-    width: 1058px;
+    width: 927px;
 }
 
 .graph-class {}
@@ -801,4 +804,159 @@
     align-items: center;
     row-gap: 25px;
 
+}
+.station-title{
+    width: auto;
+    color: #7299BF;
+    font-size: 24px;
+    line-height: normal;
+}
+
+.station-container{
+    width: 80%; 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+
+}
+
+.params-main-container{
+    width: 558px;
+    height: 245px;
+    background-color: rgba(14,19,24,0.5);
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap:10px
+
+}
+.inner-params-container{
+    width: 95%;
+}
+.params{
+    width: 260px;
+    height: 80px;
+    background-color: #0E1318;
+    border: solid 1px #5B748C;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.params-main-container div:nth-child(1){
+    float: left;
+}
+.params-main-container div:nth-child(2){
+    float: right;
+}
+.params-main-container div:nth-child(3){
+    float: left;
+    margin-top: 10px;
+}
+.params-main-container div:nth-child(4){
+    float: right;
+    margin-top: 10px;
+}
+
+.params-icon-preci1{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+
+.params-icon-humi{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+
+.params-icon-preci2{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+
+.params-title-container{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    align-items: start;
+ }
+
+ .params-title{
+    color: #7299bf;
+    font-size: 16px;
+    line-height: normal;
+    font-family: 'PublicSansMedium';
+ }
+
+ .params-value-temp{
+    color: #DB6E6E;
+    font-size: 40px;
+    font-family: 'PublicSansMedium';
+    font-weight: bold;
+    line-height: normal;
+
+ }
+ .params-value-preci1{
+    color: #00CEFF;
+    font-size: 40px;
+    font-family: 'PublicSansMedium';
+    font-weight: bold;
+    line-height: normal;
+ }
+ .params-value-humi{
+    color: #DBB36E;
+    font-size: 40px;
+    font-family: 'PublicSansMedium';
+    font-weight: bold;
+    line-height: normal;
+ }
+ .params-value-preci2{
+    color: #33CCCC;
+    font-size: 40px;
+    font-family: 'PublicSansMedium';
+    font-weight: bold;
+    line-height: normal;
+ }
+
+ .params-icon-temp{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #DB6E6E;
+    box-shadow: 0 0 10px 2px #DB6E6E;
+}
+
+ .params-icon-preci1{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #00CEFF;
+    box-shadow: 0 0 10px 2px #00CEFF;
+}
+
+ .params-icon-preci2{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #33CCCC;
+    box-shadow: 0 0 10px 2px #33CCCC;
+}
+
+ .params-icon-humi{
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #DBB36E;
+    box-shadow: 0 0 10px 2px #DBB36E;
 }

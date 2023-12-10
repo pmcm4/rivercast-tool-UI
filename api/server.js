@@ -10,8 +10,8 @@ app.use(cors());
 const dbConfig = {
   host: 'localhost',
   user: 'root',
-  password: 'pmcm4',
-  database: 'rivercast_model',
+  password: '1234',
+  database: 'rivercast',
 };
 
 const connection = mysql.createConnection(dbConfig);

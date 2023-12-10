@@ -142,10 +142,6 @@ const NangkaOptions = {
                 maxZoom: 100,
             },
         },
-        title: {
-            display: true,
-            text: 'Nangka',
-        },
     },
 };
 
@@ -207,10 +203,6 @@ const StoNinoOptions = {
                 minZoom: 100, // adjust this value based on your needs
                 maxZoom: 100,
             },
-        },
-        title: {
-            display: true,
-            text: 'Sto. Nino',
         },
     },
     scales: {
@@ -312,10 +304,6 @@ const MontalbanOptions = {
                 minZoom: 100, // adjust this value based on your needs
                 maxZoom: 100,
             },
-        },
-        title: {
-            display: true,
-            text: 'Montalban',
         },
     },
     scales: {
@@ -441,7 +429,7 @@ interface bidirectionalPredVal {
     'P.Waterlevel-3': number;
 }
 function formatDate(dateTimeString: string | number | Date) {
-    const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+    const options = { month: 'short', day: 'numeric', hour: 'numeric', hour12: true };
     const formattedDate = new Date(dateTimeString).toLocaleDateString('en-US', options);
     return formattedDate;
 }
@@ -1078,6 +1066,40 @@ export const Body = ({ className }: BodyProps) => {
             <div className={styles['top-body']}>
                 <div className={styles['graph-results']}>
             <div className={styles['selected-graph']}>
+                            <div className={styles['station-container']}>
+                            <div className={styles['station-legend']}>
+                                    <span className={styles['station-span']}>Station</span>
+                                    <span className={styles['station-name']}>{stationName()}</span>
+            </div>
+            <div className={styles['color-legends']}>
+                                    <span className={styles['f-legend']}>
+                                        <img
+                                            src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699772426/bob_r5at7s.png"
+                                            alt=""
+                                            className={styles['blob-blue']}
+                                        />
+                                        Actual
+                                    </span>
+                                    <span className={styles['f-legend']}>
+                                        <img
+                                            src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699772425/bob_1_qj5e3p.png"
+                                            alt=""
+                                            className={styles['blob-yellow']}
+                                        />
+                                        Predicted
+                                    </span>
+                                </div>
+                                
+                            <div className={styles['drop-down']}>
+                                <div className={styles['dd-title']}>
+                                    <span className={styles['drop-down-text']}>FILTER</span>
+                                </div>
+                                <DropDownCall setSelectedFilter={setSelectedFilter} />
+
+                            </div>
+
+                            </div>
+
             <LoadingModal loading={loading} />
                 {!loading && (
                 <div className={styles['inside-chart']}>
@@ -1141,47 +1163,8 @@ export const Body = ({ className }: BodyProps) => {
                         </div>
                 <div className={styles['table-results']}>
                     <div className={styles['select-station']}>
-                        <div className={styles['title-bar-visualize']}>
-                            <img
-                                src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699771433/icon_urry4k.png"
-                                alt=""
-                                className={styles['icon-title-bar']}
-                            />
-                            <span className={styles['title-vf']}>Visualize Forecast</span>
-                        </div>
                         <div className={styles.stations}>
-                            <div className={styles.legends}>
-                                <div className={styles['station-legend']}>
-                                    <span className={styles['station-span']}>Station</span>
-                                    <span className={styles['station-name']}>{stationName()}</span>
-                                </div>
-                                <div className={styles['color-legends']}>
-                                    <span className={styles['f-legend']}>
-                                        <img
-                                            src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699772426/bob_r5at7s.png"
-                                            alt=""
-                                            className={styles['blob-blue']}
-                                        />
-                                        Actual
-                                    </span>
-                                    <span className={styles['f-legend']}>
-                                        <img
-                                            src="https://res.cloudinary.com/dgb2lnz2i/image/upload/v1699772425/bob_1_qj5e3p.png"
-                                            alt=""
-                                            className={styles['blob-yellow']}
-                                        />
-                                        Predicted
-                                    </span>
-                                </div>
-                            </div>
                             <div className={styles['rangesContainer']}>
-                            <div className={styles['drop-down']}>
-                                <div className={styles['dd-title']}>
-                                    <span className={styles['drop-down-text']}>FILTER</span>
-                                </div>
-                                <DropDownCall setSelectedFilter={setSelectedFilter} />
-
-                            </div>
                             <div className={styles['date-range']}>
                                 <div className={styles['dd-title']}>
                                     <span className={styles['drop-down-text']}>DATE RANGE</span>
@@ -1202,337 +1185,70 @@ export const Body = ({ className }: BodyProps) => {
                                 className={styles['icon-title-bar']}
                                 onClick={getMetrics}
                             />
-                            <span className={styles['title-vf']}>Experimental Results</span>
+                            <span className={styles['title-vf']}>Weather Highlights</span>
                         </div>
-                        <div className={styles.table}>
-                        <LoadingModal loading={loading} />
-                                    {!loading && (
-                        <TableContainer component={Paper} sx={{ backgroundColor: 'transparent', overflow:'hidden' }}>
-                            <Table sx={{ width: 658, height: 443 }} aria-label="customized table">
-                                <TableHead>
-                                <TableRow>
-                                    <StyledTableCell sx={{ width: 80, height: 84, border: 'none' }}>
-                                    TIME
-                                    </StyledTableCell>
-                                    <StyledTableCell
-                                    align="center"
-                                    sx={{ width: 223, height: 84, border: 'none' }}
-                                    >
-                                    Transformer with Principal Component Analysis
-                                    </StyledTableCell>
-                                    <StyledTableCell
-                                    align="center"
-                                    sx={{ width: 223, height: 84, border: 'none' }}
-                                    >
-                                    Transformer by Jiaxing Xu, Hongxiang Fan, Minghan Luo et al. (2013)
-                                    </StyledTableCell>
-                                </TableRow>
-                                </TableHead>
-                                
-                                <TableBody sx={{ border: 'none' }}>
-                               
-                                {sortedRows.map((row) => (
-                                    
-                                    <StyledTableRow key={row.time.toISOString()} sx={{ border: 'none' }}>
-                                    
-                                    <StyledTableCell
-                                        component="th"
-                                        scope="row"
-                                        sx={{ width: 120,height: 10, border: 'none'}}
-                                        align="right"
-                                    >
-                                        {row.time.toLocaleDateString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                        year: 'numeric',
-                                        })}
-                                    </StyledTableCell>
-                                    
-                                    <StyledTableCell
-                                        align="center"
-                                        sx={{ height: 10, border: 'none' }}
-                                    >
-                                        {row.m1}
-                                    </StyledTableCell>
-                                    <StyledTableCell
-                                        align="center"
-                                        sx={{ height: 10, border: 'none' }}
-                                    >
-                                        {row.m2}
-                                    </StyledTableCell>
-                                    </StyledTableRow>
-                                    
-                                ))}
-                                
-                                {totMAEsRow.map((row) => (
-                                    <StyledTableRowMetrics>
-                                    <StyledTableCell
-                                        component="th"
-                                        scope="row"
-                                        align="right"
-                                        sx={{ width: 120, height: 10, border: 'none'}}
-                                    >
-                                        <span className={styles['aveMaeP']}>Average MAE</span>
-                                    </StyledTableCell>
-                                        <StyledTableCell 
-                                            align="center"
-                                            sx={{ height: 10, border: 'none' }}
-                                            >
-                                            <span className={styles['aveMaeP']}>{row.m3}</span>
-                                        </StyledTableCell>
-                                        <StyledTableCell 
-                                            align="center"
-                                            sx={{ height: 10, border: 'none' }}
-                                            >
-                                            <span className={styles['aveMaeP']}>{row.m4}</span>
-                                        </StyledTableCell>
-                                    </StyledTableRowMetrics>
-                                    ))}
-
-                                {totMAEsRow.map((row) => (
-                                    <StyledTableRowMetrics>
-                                    <StyledTableCell
-                                        component="th"
-                                        scope="row"
-                                        sx={{ width: 120, height: 10, border: 'none'}}
-                                        align="right"
-                                    >
-                                        <span className={styles['aveMaeP']}>STD Deviation</span>
-                                    </StyledTableCell>
-                                        <StyledTableCell 
-                                            align="center"
-                                            sx={{ height: 10, border: 'none' }}
-                                            >
-                                            <span className={styles['aveMaeP']}>{row.m5}</span>
-                                        </StyledTableCell>
-                                        <StyledTableCell 
-                                            align="center"
-                                            sx={{ height: 10, border: 'none' }}
-                                            >
-                                            <span className={styles['aveMaeP']}>{row.m6}</span>
-                                        </StyledTableCell>
-                                    </StyledTableRowMetrics>
-                                    ))}
-
-                                    
-                                {pValsRow.map((row) => (
-                                    <StyledTableRowMetrics>
-                                    <StyledTableCell
-                                        component="th"
-                                        scope="row"
-                                        sx={{ width: 120, height: 10, border: 'none'}}
-                                        align="right"
-                                        
-                                    >
-                                        <span className={styles['aveMaeP']}>P-Value</span>
-                                    </StyledTableCell>
-                                        <StyledTableCell 
-                                            align="center"
-                                            sx={{ height: 10, border: 'none' }}
-                                            colSpan={3}
-                                            >
-                                            <span className={styles['aveMaeP']}>{row.m1}</span>
-                                        </StyledTableCell>
-                                    </StyledTableRowMetrics>
-                                    ))}
-                                </TableBody>
-                                    
-                            </Table>
-                            </TableContainer>
-                                    )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className={styles['bottom-body']}>
-                <h3 className={styles['h3-title']}>Process</h3>
-                <div className={styles['graph-process']}>
-                    <div className={styles.process}>
-                        <div className={styles['topbar-process']}>
-                            <span className={styles['number-process']}>1</span>
-                            <span className={styles['process-1-title']}>Raw Dataset</span>
-                        </div>
-                        <div className={styles['center-bar-process']}>
-                        <LoadingModal loading={loading} />
-                                    {!loading && (
-                            <img
-                                src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/RawData.png" : "/src/assets/biimages/rawDataBidirectional-removebg-preview.png"}
-                                alt="Raw Dataset Image"
-                                className={styles['image-bar-process']}
-                            />
-                                    )}
-                        </div>
-                        <div className={styles['bottom-bar-process']}>
-                        <div className={styles['left-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-1']} />
-                                    Waterlevel
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-2']} />
-                                    Waterlevel.1
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-3']} />
-                                    Waterlevel.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-4']} />
-                                    Waterlevel.3
-                                </span>
-                            </div>
-                            <div className={styles['right-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-5']} />
-                                    RF-Intensity
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-6']} />
-                                    RF-Intensity.1
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-7']} />
-                                    RF-Intensity.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-8']} />
-                                    RF-Intensity.3
-                                </span>
-                            </div>
-                            <div className={styles['right-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-9']} />
-                                    Precipitation
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-10']} />
-                                    Precipitation.1
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-11']} />
-                                    Precipitation.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-12']} />
-                                    Humidity
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-13']} />
-                                    Humidity.1
-                                </span>
-                            </div>
-                            <div className={styles['right-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-14']} />
-                                    Humidity.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-15']} />
-                                    Temperature
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-16']} />
-                                    Temperature.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-17']} />
-                                    Temperature.3
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.process}>
-                        <div className={styles['topbar-process']}>
-                            <span className={styles['number-process']}>2</span>
-                            <span className={styles['process-1-title']}>Clean Dataset</span>
-                        </div>
-                        <div className={styles['center-bar-process']}>
-                        <LoadingModal loading={loading} />
-                                    {!loading && (
-                            <img
-                                src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/cleanData.png" : "/src/assets/biimages/cleanDataBidirectional-removebg-preview.png"}
-                                alt="Clean Dataset Image"
-                                className={styles['image-bar-process']}
-                            />
-                                    )}
-                        </div>
-                        <div className={styles['bottom-bar-process-clean']}>
-                            <div className={styles['left-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-1']} />
-                                    Waterlevel
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-2']} />
-                                    Waterlevel.1
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-3']} />
-                                    Waterlevel.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-4']} />
-                                    Waterlevel.3
-                                </span>
-                            </div>
-                            <div className={styles['right-process-legends']}>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-5']} />
-                                    RF-Intensity
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-6']} />
-                                    RF-Intensity.1
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-7']} />
-                                    RF-Intensity.2
-                                </span>
-                                <span className={styles['legends-process']}>
-                                    <div className={styles['legend-8']} />
-                                    RF-Intensity.3
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.heat_map_process}>
-                        <div className={styles['topbar-process']}>
-                            <span className={styles['number-process']}>3</span>
-                            <span className={styles['process-1-title']}>
-                                Visualize Attention Scores
+                            <div className={styles['params-main-container']}>
+                            <span className={styles['station-title']}>
+                                    Nangka
                             </span>
-                        </div>
-                        <div className={styles['attention-scores']} >
-                        <LoadingModal loading={loading} />
-                                    {!loading && (
-                            <CCarousel controls className={styles['image-bar-process-attn-container']} interval>
-                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
-                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output1-removebg-preview.png" : "/src/assets/biimages/output1-removebg-preview.png"} alt="slide 1" />
-                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
-                                        <h5>Nangka Attention Score</h5>
-                                    </CCarouselCaption>
-                                </CCarouselItem>
-                                <CCarouselItem>
-                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output2-removebg-preview.png" : "/src/assets/biimages/output2-removebg-preview.png"} alt="slide 2" />
-                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
-                                        <h5>Sto Nino Attention Score</h5>
-                                    </CCarouselCaption>
-                                </CCarouselItem>
-                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
-                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output3-removebg-preview.png" : "/src/assets/biimages/output3-removebg-preview.png"} alt="slide 3" />
-                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
-                                        <h5>Sto Nino Attention Score</h5>
-                                    </CCarouselCaption>
-                                </CCarouselItem>
-                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
-                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output4-removebg-preview.png" : "/src/assets/biimages/output4-removebg-preview.png"} alt="slide 3" />
-                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
-                                        <h5>Montalban Attention Score</h5>
-                                    </CCarouselCaption>
-                                </CCarouselItem>
-                            </CCarousel>
-                                    )}
-                        </div>
+                            <div className={styles['inner-params-container']}>
+                            <div className={styles['params']}>
+                                <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Temperature</span>
+                                <span className={styles['params-value-temp']}>25°C</span>
+                                </div>
+
+                                <div className={styles['params-icon-temp']}>
+                                    <img src={" "}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-1</span>
+                                <span className={styles['params-value-preci1']}>0.5 mm</span>
+                                </div>
+                                <div className={styles['params-icon-preci1']}>
+                                    <img src={" "}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Humidity</span>
+                                <span className={styles['params-value-humi']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-humi']}>
+                                    <img src={" "}/>
+                                </div>
+                            </div>
+                            <div className={styles['params']}>
+                            <div className={styles['params-title-container']}>
+                                <span className={styles['params-title']}>Rainfall-2</span>
+                                <span className={styles['params-value-preci2']}>69</span>
+                                </div>
+                                <div className={styles['params-icon-preci2']}>
+                                    <img src={" "}/>
+                                </div>
+                            </div>
+
+                            </div>
+
+
+                            </div>
+                            <div className={styles['params-main-container']}>
+                            <span className={styles['station-title']}>
+                                    Sto. Nino
+                            </span>
+
+
+                            </div>
+
+                            <div className={styles['params-main-container']}>
+                            <span className={styles['station-title']}>
+                                    Montalban
+                            </span>
+
+
+                            </div>
                     </div>
                 </div>
             </div>
