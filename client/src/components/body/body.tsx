@@ -1148,23 +1148,7 @@ export const Body = ({ className }: BodyProps) => {
                     alt=""
                     className={styles.mae_logo1}
                     onClick={checkForNewDataPred}
-                />
-                 <LoadingModal loading={loading} />
-                        {!loading && (
-                <div className={styles.text_mae}>
-               
-                    <span className={styles.mae_title}>Mean Absolute Error</span>
-                    {totMAEsRow.map((row, index) => (
-                        <span key={index} className={styles.mae_result}>
-                            
-                            {selectedModel === 'rivercast' ? row.m3 : row.m4}
-                        
-                        </span>
-                        
-                    ))}
-                    
-                </div>
-                )}           
+                />         
             </div>
             </div>
             <div className={styles['top-body']}>
