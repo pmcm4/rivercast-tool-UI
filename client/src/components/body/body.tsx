@@ -1454,7 +1454,198 @@ export const Body = ({ className }: BodyProps) => {
                     </div>
                 </div>
             </div>
-
+            <div className={styles['bottom-body']}>
+                <h3 className={styles['h3-title']}>Process</h3>
+                <div className={styles['graph-process']}>
+                    <div className={styles.process}>
+                        <div className={styles['topbar-process']}>
+                            <span className={styles['number-process']}>1</span>
+                            <span className={styles['process-1-title']}>Raw Dataset</span>
+                        </div>
+                        <div className={styles['center-bar-process']}>
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
+                            <img
+                                src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/RawData.png" : "/src/assets/biimages/rawDataBidirectional-removebg-preview.png"}
+                                alt="Raw Dataset Image"
+                                className={styles['image-bar-process']}
+                            />
+                                    )}
+                        </div>
+                        <div className={styles['bottom-bar-process']}>
+                        <div className={styles['left-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-1']} />
+                                    Waterlevel
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-2']} />
+                                    Waterlevel.1
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-3']} />
+                                    Waterlevel.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-4']} />
+                                    Waterlevel.3
+                                </span>
+                            </div>
+                            <div className={styles['right-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-5']} />
+                                    RF-Intensity
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-6']} />
+                                    RF-Intensity.1
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-7']} />
+                                    RF-Intensity.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-8']} />
+                                    RF-Intensity.3
+                                </span>
+                            </div>
+                            <div className={styles['right-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-9']} />
+                                    Precipitation
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-10']} />
+                                    Precipitation.1
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-11']} />
+                                    Precipitation.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-12']} />
+                                    Humidity
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-13']} />
+                                    Humidity.1
+                                </span>
+                            </div>
+                            <div className={styles['right-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-14']} />
+                                    Humidity.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-15']} />
+                                    Temperature
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-16']} />
+                                    Temperature.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-17']} />
+                                    Temperature.3
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.process}>
+                        <div className={styles['topbar-process']}>
+                            <span className={styles['number-process']}>2</span>
+                            <span className={styles['process-1-title']}>Clean Dataset</span>
+                        </div>
+                        <div className={styles['center-bar-process']}>
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
+                            <img
+                                src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/cleanData.png" : "/src/assets/biimages/cleanDataBidirectional-removebg-preview.png"}
+                                alt="Clean Dataset Image"
+                                className={styles['image-bar-process']}
+                            />
+                                    )}
+                        </div>
+                        <div className={styles['bottom-bar-process-clean']}>
+                            <div className={styles['left-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-1']} />
+                                    Waterlevel
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-2']} />
+                                    Waterlevel.1
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-3']} />
+                                    Waterlevel.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-4']} />
+                                    Waterlevel.3
+                                </span>
+                            </div>
+                            <div className={styles['right-process-legends']}>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-5']} />
+                                    RF-Intensity
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-6']} />
+                                    RF-Intensity.1
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-7']} />
+                                    RF-Intensity.2
+                                </span>
+                                <span className={styles['legends-process']}>
+                                    <div className={styles['legend-8']} />
+                                    RF-Intensity.3
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.heat_map_process}>
+                        <div className={styles['topbar-process']}>
+                            <span className={styles['number-process']}>3</span>
+                            <span className={styles['process-1-title']}>
+                                Visualize Attention Scores
+                            </span>
+                        </div>
+                        <div className={styles['attention-scores']} >
+                        <LoadingModal loading={loading} />
+                                    {!loading && (
+                            <CCarousel controls className={styles['image-bar-process-attn-container']} interval>
+                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
+                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output1-removebg-preview.png" : "/src/assets/biimages/output1-removebg-preview.png"} alt="slide 1" />
+                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
+                                        <h5>Nangka Attention Score</h5>
+                                    </CCarouselCaption>
+                                </CCarouselItem>
+                                <CCarouselItem>
+                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output2-removebg-preview.png" : "/src/assets/biimages/output2-removebg-preview.png"} alt="slide 2" />
+                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
+                                        <h5>Sto Nino Attention Score</h5>
+                                    </CCarouselCaption>
+                                </CCarouselItem>
+                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
+                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output3-removebg-preview.png" : "/src/assets/biimages/output3-removebg-preview.png"} alt="slide 3" />
+                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
+                                        <h5>Sto Nino Attention Score</h5>
+                                    </CCarouselCaption>
+                                </CCarouselItem>
+                                <CCarouselItem className={styles['image-bar-process-attn-item']}>
+                                    <CImage className={styles['image-bar-process-attn']} src={selectedModel === 'rivercast' ? "/src/assets/rivercastImages/output4-removebg-preview.png" : "/src/assets/biimages/output4-removebg-preview.png"} alt="slide 3" />
+                                    <CCarouselCaption className={styles['image-bar-process-attn-caption']}>
+                                        <h5>Montalban Attention Score</h5>
+                                    </CCarouselCaption>
+                                </CCarouselItem>
+                            </CCarousel>
+                                    )}
+                        </div>
+                        </div>  
+                        </div> 
+                        </div>         
         </div>
     );
 };
