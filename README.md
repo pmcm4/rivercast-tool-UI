@@ -12,6 +12,6 @@ RiverCast is a system developed to predict the water level of the Marikina River
 ## Tech Stack
 - **Frontend:** React.js
 - **Backend:** FastAPI (Python)
-- **Deep Learning Model:** Transformer-based model with Euclidean and PCA kernel
+- **Deep Learning Model:** Auto-Regressive Transformer Model with Euclidean Kernel and PCA Kernel
 - **Database:** MySQL
 - **Data Sources:** PAGASA, MMDA, NASA DATA POWER
