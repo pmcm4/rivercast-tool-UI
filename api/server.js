@@ -10,7 +10,7 @@ app.use(cors());
 const dbConfig = {
   host: 'localhost',
   user: 'root',
-  password: '1234',
+  password: process.env.DATABASE_PASSWORD,
   database: 'rivercast',
 };
 
